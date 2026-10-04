@@ -1,52 +1,1895 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>내 GAS 기반 웹사이트</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            background-color: #f4f6f9;
-        }
-        .container {
-            text-align: center;
-            background: white;
-            padding: 40px;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        }
-        h1 { color: #333; }
-        p { color: #666; }
-        button {
-            padding: 10px 20px;
-            font-size: 16px;
-            background-color: #4285f4;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-        }
-        button:hover { background-color: #3367d6; }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title id="pageTitle">JP Park | AI·디지털 미래교육</title>
+  <meta name="description" content="평택 율포초등학교 수석교사 박종필의 AI·디지털 미래교육 포트폴리오" />
+  <style>
+    :root{
+      --primary:#3b63f6;
+      --primary-hover:#254ed8;
+      --secondary:#7fd8c9;
+      --accent:#ffcf70;
+      --pink:#ff9fb5;
+      --ink:#24324a;
+      --muted:#667085;
+      --white:#ffffff;
+      --panel:rgba(255,255,255,.72);
+      --shadow:0 20px 60px rgba(67,89,146,.16);
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      color:var(--ink);
+      font-family:Pretendard, "Apple SD Gothic Neo", "Noto Sans KR", system-ui, sans-serif;
+      background:
+        radial-gradient(circle at 12% 18%, rgba(255,207,112,.45), transparent 28%),
+        radial-gradient(circle at 88% 14%, rgba(127,216,201,.45), transparent 30%),
+        radial-gradient(circle at 75% 82%, rgba(255,159,181,.28), transparent 28%),
+        linear-gradient(135deg,#f8fbff 0%,#fffdf7 45%,#f8fffc 100%);
+      min-height:100vh;
+      overflow-x:hidden;
+    }
+    .orb{
+      position:fixed;
+      border-radius:50%;
+      filter:blur(8px);
+      opacity:.55;
+      z-index:-1;
+      animation:float 8s ease-in-out infinite;
+    }
+    .orb.one{width:180px;height:180px;background:#a8bfff;left:-55px;top:12%}
+    .orb.two{width:220px;height:220px;background:#ffd98a;right:-70px;top:45%;animation-delay:-2s}
+    .orb.three{width:150px;height:150px;background:#b5eee5;left:42%;bottom:-45px;animation-delay:-4s}
+    @keyframes float{50%{transform:translateY(-18px) translateX(10px)}}
+    
+    .container{width:min(1180px,calc(100% - 40px));margin:0 auto}
+    header{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding:24px 0;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      font-weight:800;
+      letter-spacing:-.03em;
+      cursor:pointer;
+    }
+    .brand-mark{
+      width:42px;height:42px;border-radius:14px;
+      display:grid;place-items:center;
+      color:#fff;font-size:20px;
+      background:linear-gradient(135deg,var(--primary),#8e9cff);
+      box-shadow:0 10px 25px rgba(59,99,246,.28);
+    }
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    nav{display:flex;gap:20px; flex-wrap: wrap;}
+    nav button{
+      text-decoration:none;color:var(--ink);font-weight:650;font-size:15px;
+      opacity:.82; background:none; border:none; cursor:pointer; padding:0;
+      font-family:inherit;
+    }
+    nav button:hover{opacity:1;color:var(--primary)}
+    nav button.active{
+      color:var(--primary);
+      opacity:1;
+      position:relative;
+    }
+    nav button.active::after{
+      content:"";
+      position:absolute;
+      left:0;right:0;bottom:-9px;
+      height:3px;border-radius:999px;
+      background:linear-gradient(90deg,var(--primary),#38bdf8);
+    }
+
+    .page-view{display:none;animation:pageIn .35s ease both;}
+    .page-view.active{display:block;}
+    @keyframes pageIn{
+      from{opacity:0;transform:translateY(10px)}
+      to{opacity:1;transform:translateY(0)}
+    }
+    .content-page{
+      min-height:calc(100vh - 190px);
+      padding:52px 0 80px;
+    }
+    .page-panel{
+      width:min(900px,100%);
+      margin:0 auto;
+      padding:40px 44px 42px;
+      border-radius:30px;
+      background:rgba(255,255,255,.78);
+      border:1px solid rgba(255,255,255,.95);
+      box-shadow:var(--shadow);
+      backdrop-filter:blur(18px);
+    }
+    .page-heading{
+      display:flex;align-items:center;justify-content:space-between;
+      gap:20px;margin-bottom:28px;
+    }
+    .page-heading h1{
+      margin:0;font-size:clamp(27px,2.6vw,32px);
+      line-height:1.3;letter-spacing:-.028em;font-weight:850;
+    }
+    .page-kicker{
+      margin:0 0 8px;color:var(--primary);
+      font-size:12.5px;font-weight:850;letter-spacing:.075em;
+    }
+    .page-copy{font-size:17.5px;line-height:1.82;color:var(--muted);letter-spacing:-.01em;}
+    .page-copy p{margin:0 0 16px;white-space:pre-line;}
+    .page-copy b{color:var(--ink);font-weight:800;}
+    .expertise-list{display:grid;gap:13px;}
+    .expertise-item{
+      padding:20px 22px;border-radius:18px;background:#fff;
+      border:1px solid #edf0f5;
+    }
+    .expertise-item .skill-title{
+      font-size:17px;line-height:1.42;margin-bottom:7px;
+      letter-spacing:-.018em;font-weight:800;
+    }
+    .expertise-item .skill-desc{
+      font-size:16.5px;line-height:1.68;letter-spacing:-.008em;
+    }
+    .credential-page-list{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:0;padding:0;list-style:none;}
+    .credential-page-list li{
+      padding:18px 20px;border-radius:16px;background:#fff;
+      border:1px solid #edf0f5;font-size:15.5px;line-height:1.5;
+      color:var(--ink);letter-spacing:-.01em;
+    }
+    #modalCertComment{font-size:16.5px;line-height:1.78;}
+    .contact-page-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:24px;}
+    .contact-card{padding:20px;border-radius:18px;background:#fff;border:1px solid #edf0f5;}
+    .contact-card small{
+      display:block;margin-bottom:7px;color:#8a94a6;
+      font-size:12.5px;font-weight:800;letter-spacing:.025em;
+    }
+    .contact-card a,.contact-card span{
+      color:var(--ink);font-size:16.5px;line-height:1.55;
+      font-weight:750;text-decoration:none;overflow-wrap:anywhere;
+    }
+    .about-layout{
+      display:grid;
+      grid-template-columns:minmax(0,1.45fr) minmax(230px,.75fr);
+      gap:28px;
+      align-items:stretch;
+    }
+    .about-info{min-width:0;}
+    .about-portrait{
+      position:relative;
+      min-height:390px;
+      overflow:hidden;
+      border-radius:24px;
+      background:linear-gradient(145deg,rgba(59,99,246,.10),rgba(127,216,201,.18));
+      border:1px solid rgba(59,99,246,.10);
+    }
+    .about-portrait::after{
+      content:"";
+      position:absolute;
+      left:0;right:0;bottom:0;
+      height:38%;
+      background:linear-gradient(to top,rgba(36,50,74,.18),transparent);
+      pointer-events:none;
+    }
+    .about-portrait img{
+      width:100%;height:100%;min-height:390px;
+      display:block;object-fit:cover;object-position:center top;
+    }
+    .about-portrait-caption{
+      position:absolute;left:18px;right:18px;bottom:16px;z-index:2;
+      padding:13px 15px;border-radius:15px;color:#fff;
+      background:rgba(36,50,74,.72);backdrop-filter:blur(10px);
+    }
+    .about-portrait-caption strong{display:block;font-size:16px;margin-bottom:3px;}
+    .about-portrait-caption span{font-size:13px;opacity:.88;}
+    
+    .admin-lock {
+      background: none;
+      border: none;
+      padding: 0;
+      cursor: pointer;
+      font-size: 18px;
+      opacity: 0.82;
+      transition: .2s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .admin-lock:hover {
+      opacity: 1;
+      transform: scale(1.1);
+    }
+
+    .hero{
+      display:grid;
+      grid-template-columns:1.12fr .88fr;
+      align-items:center;
+      gap:56px;
+      padding:62px 0 86px;
+    }
+    .eyebrow{
+      display:inline-flex;
+      align-items:center;
+      gap:9px;
+      padding:10px 15px;
+      border-radius:999px;
+      background:rgba(255,255,255,.78);
+      border:1px solid rgba(59,99,246,.14);
+      box-shadow:0 8px 24px rgba(50,68,110,.08);
+      font-weight:750;
+      font-size:14px;
+      color:#3b63f6;
+      backdrop-filter:blur(10px);
+    }
+    h1{
+      margin:24px 0 20px;
+      font-size:clamp(44px,6.2vw,78px);
+      line-height:1.06;
+      letter-spacing:-.055em;
+    }
+    .gradient-text{
+      background:linear-gradient(100deg,#3b63f6 0%,#38bdf8 52%,#f59e0b 100%);
+      -webkit-background-clip:text;
+      background-clip:text;
+      color:transparent;
+    }
+    .lead{
+      max-width:670px;
+      font-size:clamp(18px,2vw,22px);
+      line-height:1.75;
+      color:var(--muted);
+      word-break:keep-all;
+    }
+    .cta-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:14px;
+      margin-top:28px;
+      align-items:center;
+    }
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      min-height:50px;
+      padding:0 20px;
+      border-radius:14px;
+      text-decoration:none;
+      font-weight:800;
+      transition:.25s ease;
+      cursor:pointer;
+      border:none;
+    }
+    .btn.subtle {
+      color: var(--ink);
+      background: rgba(255, 255, 255, 0.78);
+      border: 1px solid rgba(36, 50, 74, 0.08);
+      box-shadow: 0 10px 26px rgba(42, 56, 93, 0.08);
+    }
+    .btn.subtle:hover {
+      transform: translateY(-3px);
+      border-color: rgba(59, 99, 246, 0.3);
+      color: var(--primary);
+    }
+    .btn.primary {
+      color: #fff;
+      background: var(--primary);
+      box-shadow: 0 8px 20px rgba(59,99,246,.35);
+    }
+    .btn.primary:hover {
+      background: var(--primary-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 24px rgba(59,99,246,.45);
+    }
+    .btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none !important;
+    }
+
+    .today-training-box {
+      margin-top: 32px;
+      padding: 22px 24px;
+      border-radius: 24px;
+      background: rgba(255, 255, 255, 0.65);
+      border: 1px solid rgba(59, 99, 246, 0.18);
+      box-shadow: 0 10px 30px rgba(59, 99, 246, 0.06);
+      backdrop-filter: blur(12px);
+      position: relative;
+    }
+    .today-header-flex {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+    }
+    .today-title {
+      font-size: 17px;
+      font-weight: 800;
+      color: var(--ink);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .today-links-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .today-link-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      font-size: 15px;
+      color: var(--primary);
+      text-decoration: none;
+      padding: 8px 12px;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.8);
+      border: 1px solid rgba(36, 50, 74, 0.05);
+      transition: all .2s ease;
+      cursor: pointer;
+    }
+    .today-link-item:hover {
+      background: #fff;
+      transform: translateX(4px);
+      border-color: rgba(59, 99, 246, 0.3);
+    }
+    .today-link-num {
+      width: 22px; height: 22px;
+      border-radius: 50%;
+      background: var(--primary);
+      color: #fff;
+      font-size: 12px;
+      font-weight: 800;
+      display: grid; place-items: center;
+      flex-shrink: 0;
+    }
+
+    .micro{
+      margin-top:28px;
+      display:flex;flex-wrap:wrap;gap:10px;align-items:center;
+    }
+    .tag{
+      padding:9px 12px;border-radius:12px;
+      background:rgba(255,255,255,.68);
+      border:1px solid rgba(36,50,74,.07);
+      color:#516078;font-size:13px;font-weight:700;
+    }
+    .keyword-empty{color:var(--muted);font-size:13px;}
+
+    .visual{
+      position:relative;
+      min-height:520px;
+      display:grid;
+      place-items:center;
+    }
+    .profile-card{
+      width:min(100%,430px);
+      padding:28px;
+      border-radius:34px;
+      background:var(--panel);
+      border:1px solid rgba(255,255,255,.95);
+      box-shadow:var(--shadow);
+      backdrop-filter:blur(20px);
+      position:relative;
+      overflow:hidden;
+    }
+    .profile-card::before{
+      content:"";
+      position:absolute;inset:0 0 auto 0;height:9px;
+      background:linear-gradient(90deg,var(--primary),var(--secondary),var(--accent),var(--pink));
+    }
+    .portrait{
+      height:235px;border-radius:24px;
+      display:flex;align-items:flex-end;
+      padding:20px;
+      background:
+        linear-gradient(145deg,rgba(59,99,246,.08),rgba(127,216,201,.25)),
+        linear-gradient(135deg,#f4f7fc,#fcf8f0);
+      position:relative;overflow:hidden;
+    }
+    .portrait::after{
+      content:"AI × Education";
+      position:absolute;right:-24px;top:28px;
+      transform:rotate(8deg);
+      font-size:42px;font-weight:900;
+      color:rgba(59,99,246,.08);
+      letter-spacing:-.04em;
+    }
+    .profile-photo {
+      position: absolute;
+      right: 12px;
+      bottom: 0;
+      height: 215px;
+      object-fit: contain;
+      filter: drop-shadow(0 10px 20px rgba(53,70,110,.15));
+      z-index: 1;
+    }
+    .avatar{
+      width:64px;height:64px;border-radius:20px;
+      background:linear-gradient(145deg,#3b63f6,#7fd8c9);
+      display:grid;place-items:center;
+      color:#fff;font-weight:900;font-size:18px;
+      box-shadow:0 10px 20px rgba(59,99,246,.2);
+      z-index:2;
+      position: relative;
+    }
+    .profile-copy{padding:22px 4px 2px}
+    .profile-copy h2{margin:0 0 8px;font-size:28px;letter-spacing:-.04em}
+    .profile-copy p{margin:0;color:var(--muted);line-height:1.65}
+    
+    .credential-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+      margin-top:20px;
+    }
+    .badge-card{
+      padding:12px;
+      border-radius:16px;
+      background:rgba(255,255,255,.78);
+      border:1px solid rgba(36,50,74,.07);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      min-height:76px;
+      transition:.2s ease;
+    }
+    .badge-card:hover{
+      transform:translateY(-2px);
+      box-shadow:0 8px 20px rgba(53,70,110,.1);
+      border-color:rgba(59,99,246,.3);
+    }
+    .badge-card img {
+      max-width: 100%;
+      max-height: 48px;
+      object-fit: contain;
+    }
+
+    .highlights{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:18px;
+      padding-bottom:70px;
+    }
+    .highlight{
+      padding:24px;
+      border-radius:24px;
+      background:rgba(255,255,255,.72);
+      border:1px solid rgba(255,255,255,.95);
+      box-shadow:0 15px 40px rgba(53,70,110,.09);
+      backdrop-filter:blur(12px);
+      transition:.25s ease;
+    }
+    .highlight:hover{transform:translateY(-4px);box-shadow:0 20px 45px rgba(53,70,110,.14)}
+    .icon{
+      width:44px;height:44px;border-radius:14px;
+      display:grid;place-items:center;margin-bottom:16px;font-size:22px;
+      background:linear-gradient(145deg,#f0f4ff,#fff7df);
+    }
+    .highlight h3{margin:0 0 10px;font-size:20px;white-space:pre-line;}
+    .highlight p{margin:0;color:var(--muted);line-height:1.65;white-space:pre-line;}
+    
+    .modal-overlay{
+      position:fixed;inset:0;background:rgba(36,50,74,.4);
+      backdrop-filter:blur(6px);display:grid;place-items:center;
+      z-index:1000;opacity:0;pointer-events:none;transition:all .3s ease;
+    }
+    .modal-overlay.active{opacity:1;pointer-events:auto}
+    
+    .modal-card{
+      width:min(520px, calc(100% - 32px));
+      background:#fff;border-radius:22px;padding:22px 24px;
+      box-shadow:0 25px 50px rgba(36,50,74,.25);
+      transform:translateY(20px) scale(.95);
+      transition:all .3s cubic-bezier(0.16, 1, 0.3, 1);
+      position:relative;
+      max-height: 82vh;
+      overflow-y: auto;
+    }
+    .modal-overlay.active .modal-card{transform:translateY(0) scale(1)}
+    .modal-close{
+      position:absolute;top:16px;right:16px;width:32px;height:32px;
+      border-radius:50%;background:#f0f4ff;border:none;cursor:pointer;
+      font-size:16px;font-weight:bold;color:var(--primary);
+      display:grid;place-items:center;transition:.2s;
+    }
+    .modal-close:hover{background:var(--primary);color:#fff}
+    .modal-header-flex {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+    .modal-title{font-size:20px;margin:0;letter-spacing:-.03em;color:var(--ink)}
+    
+    .edit-pencil {
+      background: #f0f4ff;
+      border: none;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: none;
+      place-items: center;
+      font-size: 14px;
+      transition: .2s;
+      flex-shrink: 0;
+    }
+    .edit-pencil:hover {
+      background: var(--primary);
+      color: #fff;
+    }
+
+    .modal-body{color:var(--muted);line-height:1.55;font-size:15px;white-space:normal;}
+    .modal-body p{margin:0 0 12px;}
+    .modal-body p:last-child{margin-bottom:0;}
+    .modal-body ul{padding-left:22px;margin:8px 0 0;}
+    .modal-body li{
+      margin:0 0 12px;
+      padding:0;
+      white-space:normal;
+    }
+    .modal-body li:last-child {
+      margin-bottom:0;
+    }
+    .skill-title {
+      font-weight: 800;
+      color: var(--ink);
+      font-size: 16px;
+      margin:0 0 4px;
+      line-height:1.35;
+      display:block;
+    }
+    .skill-desc {
+      color: var(--muted);
+      font-size: 14.5px;
+      line-height:1.55;
+      display:block;
+      margin:0;
+      white-space:pre-line;
+    }
+
+    #expertiseModal .modal-body ul{
+      list-style:none;
+      padding:0;
+      margin:4px 0 0;
+    }
+    #expertiseModal .modal-body li{
+      margin:0;
+      padding:12px 0;
+      border-bottom:1px solid #eef1f5;
+    }
+    #expertiseModal .modal-body li:first-child{padding-top:4px;}
+    #expertiseModal .modal-body li:last-child{
+      padding-bottom:0;
+      border-bottom:none;
+    }
+    #contactModal .modal-body p{margin:0;}
+    #contactModal .contact-details{margin-top:12px;line-height:1.8;}
+    #credentialsModal .modal-body li{margin-bottom:8px;}
+
+    .plain-link {
+      color: inherit;
+      text-decoration: none;
+    }
+    .plain-link:hover {
+      opacity: 0.8;
+    }
+
+    .contact-action-icons {
+      display: inline-flex;
+      gap: 6px;
+      margin-left: 8px;
+      vertical-align: middle;
+    }
+    .contact-action-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: #f0f4ff;
+      color: var(--primary);
+      text-decoration: none;
+      font-size: 13px;
+      transition: .2s;
+    }
+    .contact-action-icon:hover {
+      background: var(--primary);
+      color: #fff;
+    }
+
+    .admin-form-group {
+      margin-bottom: 10px;
+    }
+    .admin-form-group label {
+      display: block;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 3px;
+    }
+    .admin-form-group input, .admin-form-group textarea {
+      width: 100%;
+      padding: 8px 12px;
+      border-radius: 10px;
+      border: 1px solid #d1d5db;
+      font-size: 14px;
+      font-family: inherit;
+    }
+    .admin-form-group textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+    .admin-form-group input:focus, .admin-form-group textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(59,99,246,0.15);
+    }
+
+    /* 슬림하게 개선된 메인 버튼 관리 UI 스타일 */
+    .add-link-form-box {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 12px 14px;
+      margin-bottom: 12px;
+    }
+    .add-link-form-box .form-title {
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--ink);
+      margin-bottom: 8px;
+    }
+    .add-link-form-box .form-row {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+    .add-link-form-box input {
+      flex: 1;
+      padding: 7px 10px;
+      border-radius: 8px;
+      border: 1px solid #cbd5e1;
+      font-size: 13px;
+      outline: none;
+      background: #ffffff;
+    }
+    .add-link-form-box input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 2px rgba(59,99,246,0.15);
+    }
+    .add-link-form-box .add-btn {
+      min-height: 33px;
+      padding: 0 14px;
+      font-size: 13px;
+      white-space: nowrap;
+      border-radius: 8px;
+    }
+
+    .link-list-container {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      max-height: 320px;
+      overflow-y: auto;
+      padding-right: 2px;
+    }
+
+    .link-row-card {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 8px 12px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+      transition: all 0.2s ease;
+      cursor: grab;
+    }
+    .link-row-card:active {
+      cursor: grabbing;
+    }
+    .link-row-card.dragging {
+      opacity: 0.4;
+      background: #f8fafc;
+      border-style: dashed;
+    }
+
+    .drag-icon {
+      color: #cbd5e1;
+      font-size: 14px;
+      user-select: none;
+    }
+
+    .link-info-display {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+      overflow: hidden;
+    }
+    .link-info-display .link-title {
+      font-size: 13.5px;
+      font-weight: 700;
+      color: var(--ink);
+      line-height: 1.2;
+    }
+    .link-info-display .link-url-text {
+      font-size: 11.5px;
+      color: var(--muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      line-height: 1.2;
+    }
+
+    .link-edit-inputs {
+      flex: 1;
+      display: flex;
+      gap: 6px;
+    }
+    .link-edit-inputs input {
+      flex: 1;
+      padding: 5px 8px;
+      font-size: 12.5px;
+      border: 1px solid var(--primary);
+      border-radius: 6px;
+      outline: none;
+    }
+
+    .icon-btn-group {
+      display: flex;
+      gap: 4px;
+      align-items: center;
+    }
+    .icon-action-btn {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 6px;
+      width: 28px;
+      height: 28px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 13px;
+      transition: all 0.2s ease;
+    }
+    .icon-action-btn:hover {
+      background: #f1f5f9;
+      border-color: #cbd5e1;
+    }
+    /* 휴지통 버튼 붉은색 지정 */
+    .icon-action-btn.danger {
+      background: #fef2f2;
+      border-color: #fecaca;
+      color: #ef4444;
+    }
+    .icon-action-btn.danger:hover {
+      background: #fee2e2;
+      border-color: #fca5a5;
+      color: #dc2626;
+    }
+    .icon-action-btn.confirm {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+    }
+    .icon-action-btn.confirm:hover {
+      background: var(--primary-hover);
+    }
+
+    footer{
+      padding:24px 0 36px;color:#7b8699;font-size:14px;
+      text-align:center;
+    }
+
+    @media(max-width:1024px){
+      .hero{
+        grid-template-columns:1fr;
+        gap:40px;
+        padding:40px 0 60px;
+      }
+      .visual{
+        min-height:auto;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+      }
+      .profile-card{
+        width: 100%;
+        max-width: 450px;
+      }
+    }
+
+    @media(max-width:520px){
+      .container{width:min(100% - 24px,1180px)}
+      header{padding:18px 0}
+      h1{font-size:38px}
+      .hero{gap:30px;padding-bottom:40px}
+      .profile-card{padding:18px;border-radius:26px}
+      .portrait{height:210px}
+      .credential-grid{grid-template-columns:1fr}
+      .cta-row{flex-direction:column; align-items: stretch;}
+      .btn{width:100%}
+      .header-right{width:100%;gap:14px;}
+      nav{width:100%;gap:10px 16px;overflow-x:auto;padding:4px 0 10px;}
+      nav button{white-space:nowrap;}
+      .content-page{padding:30px 0 54px;}
+      .page-panel{padding:26px 20px;border-radius:24px;}
+      .page-heading{align-items:flex-start;margin-bottom:22px;}
+      .page-heading h1{font-size:25px;line-height:1.32;}
+      .page-kicker{font-size:11.5px;}
+      .page-copy{font-size:16.5px;line-height:1.76;}
+      .expertise-item{padding:18px;}
+      .expertise-item .skill-title{font-size:16px;}
+      .expertise-item .skill-desc{font-size:15.5px;}
+      .credential-page-list,.contact-page-grid{grid-template-columns:1fr;}
+      .about-layout{grid-template-columns:1fr;}
+      .about-portrait,.about-portrait img{min-height:320px;max-height:410px;}
+      .modal-card{padding:20px;max-height:88vh;}
+      .add-link-form-box .form-row { flex-direction: column; }
+      .add-link-form-box input { width: 100%; }
+      .add-link-form-box .add-btn { width: 100%; }
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <h1>👋 안녕하세요! 내 깃허브 웹사이트입니다.</h1>
-        <p>Google Apps Script(GAS)와 연동을 준비 중입니다.</p>
-        <button onclick="testGAS()">GAS 연결 테스트</button>
-        <p id="result"></p>
-    </div>
+  <!-- 아래 주소를 새로 배포한 GAS 웹 앱 /exec 주소로 바꾸세요. -->
+  <iframe id="gasBridge" title="데이터 연결" hidden></iframe>
+  <div class="orb one"></div>
+  <div class="orb two"></div>
+  <div class="orb three"></div>
 
-    <script>
-        function testGAS() {
-            document.getElementById("result").innerText = "GAS 연동 기능을 설정할 예정입니다.";
+  <div class="container">
+    <header>
+      <div class="brand" onclick="showPage('home')">
+        <div class="brand-mark">JP</div>
+        <span id="uiAppTitle">JP Park</span>
+      </div>
+      <div class="header-right">
+        <nav>
+          <button class="active" data-page-link="home" onclick="showPage('home')">Home</button>
+          <button data-page-link="about" onclick="showPage('about')">Who's JP Park</button>
+          <button data-page-link="expertise" onclick="showPage('expertise')">expertise</button>
+          <button data-page-link="credentials" onclick="showPage('credentials')">credentials</button>
+          <button data-page-link="contact" onclick="showPage('contact')">contacts</button>
+        </nav>
+        <button class="admin-lock" id="adminLockBtn" onclick="handleAdminAuth()" title="관리자 로그인 / 로그아웃">🔒</button>
+      </div>
+    </header>
+
+    <main>
+      <section class="page-view active" data-page="home">
+      <section class="hero" id="about">
+        <div>
+          <div class="eyebrow">✨ 교사의 성장을 돕는 미래교육 리더</div>
+          <h2>
+            교육의 미래를 통해,<br />
+            <span class="gradient-text">학생들의 행복한 배움을 설계합니다.</span>
+          </h2>
+          <p class="lead">
+            평택 율포초등학교 수석교사이자 사단법인 스마트교육학회 회장으로서,
+            교사들의 수업 지원과 장학 컨설팅을 통해 AI·디지털 기반의 미래교육을
+            학교 현장에 연결하고 있습니다.
+          </p>
+
+          <!-- 메인 버튼 영역 -->
+          <div class="cta-row" id="mainLinkContainer">
+            <button class="edit-pencil" id="editPencilLinks" onclick="openEditModal('linksEditModal')" title="메인 버튼 링크 수정">✏️</button>
+          </div>
+
+          <!-- 오늘의 연수 섹션 -->
+          <div class="today-training-box">
+            <div class="today-header-flex">
+              <div class="today-title">📢 오늘의 연수</div>
+              <button class="edit-pencil" id="editPencilToday" onclick="openEditModal('todayLinksEditModal')" title="오늘의 연수 링크 수정">✏️</button>
+            </div>
+            <div class="today-links-list" id="todayLinksContainer"></div>
+          </div>
+
+          <div class="micro" id="keywordContainer">
+            <button class="edit-pencil" id="editPencilSettings" onclick="openEditModal('settingsEditModal')" title="비밀번호 및 키워드 수정">✏️</button>
+          </div>
+        </div>
+
+        <div class="visual">
+          <article class="profile-card">
+            <div class="portrait">
+              <img src="https://lh3.googleusercontent.com/d/1jMlaFIBWiHzhY1HS8ZW3sYkhNoqcEtpy" alt="박종필 선생님 일러스트" class="profile-photo" />
+              <div class="avatar">JP</div>
+            </div>
+            <div class="profile-copy">
+              <h2><span id="uiName">박종필</span></h2>
+              <h3>As known as JP Park</h3>
+              <p><span id="uiCompany">율포초등학교</span> <span id="uiTitle">수석교사</span><br />(사) 스마트교육학회 회장</p>
+
+              <div class="credential-grid">
+                <div class="badge-card" title="Google Certified Educator L1">
+                  <img src="https://lh3.googleusercontent.com/d/1amzf0u2tivdFYMIGGUbBT60IXwH-8vf4" alt="Google Certified Educator L1" />
+                </div>
+                <div class="badge-card" title="Google Certified Educator L2">
+                  <img src="https://lh3.googleusercontent.com/d/1alB8nYcoonv31TS2Max3ab8BuJM9LeIz" alt="Google Certified Educator L2" />
+                </div>
+                <div class="badge-card" title="Google Certified Trainer">
+                  <img src="https://lh3.googleusercontent.com/d/1bgWP6DopKkocdlUJvoXEq1C4Ac6uNp53" alt="Google Certified Trainer" />
+                </div>
+                <div class="badge-card" title="Google Certified Innovator">
+                  <img src="https://lh3.googleusercontent.com/d/1akn3nc0M8DNU6EKQrgxyaO13wHCLZ1Vq" alt="Google Certified Innovator" />
+                </div>
+              </div>
+              <div class="badge-card" style="margin-top: 12px;" title="Apple Distinguished Educator">
+                <img src="https://i0.wp.com/enabling-environments.co.uk/wp-content/uploads/2017/01/ade-signature-singular-two-line-black.png?w=696&h=198&ssl=1" alt="Apple Distinguished Educator" />
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="highlights">
+        <article class="highlight">
+          <div class="icon">🧭</div>
+          <h3>수업 지원·장학 컨설팅</h3>
+          <p>교사의 전문성과 학교의 변화 역량을 높이는<br><b>현장 중심 컨설팅</b>을 제공합니다.</p>
+        </article>
+        <article class="highlight">
+          <div class="icon">🤖</div>
+          <h3>AI·디지털 미래교육</h3>
+          <p>AI와 디지털 도구를 <b>교육과정과 수업에 자연스럽게<br>연결하는 방법</b>을 연구합니다.</p>
+        </article>
+        <article class="highlight">
+          <div class="icon">🌱</div>
+          <h3>교사 성장과 교육 혁신</h3>
+          <p>연수, 연구, 공동체 활동을 통해<br><b>교사와 학생이 함께 성장하는 문화</b>를 만듭니다.</p>
+        </article>
+      </section>
+      </section>
+
+      <section class="page-view content-page" data-page="about">
+        <div class="page-panel">
+          <div class="page-heading">
+            <div>
+              <p class="page-kicker">ABOUT JP PARK</p>
+              <h1>✨ Who's JP Park</h1>
+            </div>
+            <button class="edit-pencil" id="editPencilAbout" onclick="openEditModal('aboutEditModal')" title="소개 수정">✏️</button>
+          </div>
+          <div class="about-layout">
+            <div class="about-info page-copy">
+              <p><b><span id="modalCompany">율포초등학교</span> <span id="modalTitle">수석교사</span></b>이자 <b>(사) 스마트교육학회 회장</b>으로 활동하고 있습니다.</p>
+              <p id="modalInfo1"></p>
+              <p id="modalInfo2"></p>
+            </div>
+            <aside class="about-portrait">
+              <img src="https://lh3.googleusercontent.com/d/1jMlaFIBWiHzhY1HS8ZW3sYkhNoqcEtpy" alt="박종필 수석교사 캐리커처">
+              <div class="about-portrait-caption">
+                <strong>박종필 수석교사</strong>
+                <span>AI·디지털 미래교육</span>
+              </div>
+            </aside>
+          </div>
+        </div>
+      </section>
+
+      <section class="page-view content-page" data-page="expertise">
+        <div class="page-panel">
+          <div class="page-heading">
+            <div>
+              <p class="page-kicker">EXPERTISE</p>
+              <h1>🧭 전문 분야 및 주요 활동</h1>
+            </div>
+            <button class="edit-pencil" id="editPencilExpertise" onclick="openEditModal('expertiseEditModal')" title="전문 분야 수정">✏️</button>
+          </div>
+          <div class="expertise-list" id="expertiseList"></div>
+        </div>
+      </section>
+
+      <section class="page-view content-page" data-page="credentials">
+        <div class="page-panel">
+          <div class="page-heading">
+            <div>
+              <p class="page-kicker">CREDENTIALS</p>
+              <h1>🎖️ 자격 및 인증 현황</h1>
+            </div>
+            <button class="edit-pencil" id="editPencilCredentials" onclick="openEditModal('credentialsEditModal')" title="자격 수정">✏️</button>
+          </div>
+          <ul class="credential-page-list" id="modalCertList"></ul>
+          <p id="modalCertComment" class="page-copy" style="margin:22px 0 0;"></p>
+        </div>
+      </section>
+
+      <section class="page-view content-page" data-page="contact">
+        <div class="page-panel">
+          <div class="page-heading">
+            <div>
+              <p class="page-kicker">CONTACT</p>
+              <h1>📬 교육 협력 및 연락처</h1>
+            </div>
+            <button class="edit-pencil" id="editPencilContact" onclick="openEditModal('contactEditModal')" title="연락처 수정">✏️</button>
+          </div>
+          <p class="page-copy">수업 컨설팅, AI 연수, 교육 프로젝트 협력 등 다양한 소통을 환영합니다.</p>
+          <div class="contact-page-grid">
+            <div class="contact-card"><small>소속</small><span id="contactCompany"></span></div>
+            <div class="contact-card"><small>직위</small><span id="contactTitle"></span></div>
+            <div class="contact-card"><small>연락처</small><span id="contactPhone"></span><span class="contact-action-icons"></span></div>
+            <div class="contact-card"><small>이메일</small><a href="#" target="_blank" rel="noopener noreferrer" id="contactMailLink"><span id="contactMail"></span></a></div>
+            <div class="contact-card"><small>웹사이트</small><a href="#" target="_blank" rel="noopener noreferrer" id="contactSiteLink"><span id="contactSite"></span></a></div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer id="contact">
+      © 2026 <span id="uiFooterName">박종필</span> · AI와 디지털로 더 나은 배움을 설계합니다.
+    </footer>
+  </div>
+
+  <!-- 비밀번호 로그인 모달 -->
+  <div class="modal-overlay" id="loginModal" onclick="closeModalOutside(event, 'loginModal')">
+    <div class="modal-card" style="width: min(380px, calc(100% - 32px));">
+      <button class="modal-close" onclick="closeModal('loginModal')">&times;</button>
+      <h3 class="modal-title" style="margin-bottom: 16px;">🔒 관리자 인증</h3>
+      <div class="modal-body">
+        <div class="admin-form-group">
+          <label>관리자 비밀번호</label>
+          <input type="password" id="loginPasswordInput" placeholder="비밀번호를 입력하세요" onkeydown="if(event.key==='Enter') verifyAdminPassword()">
+        </div>
+        <div style="margin-top: 16px; text-align: right;">
+          <button class="btn primary" onclick="verifyAdminPassword()" style="min-height: 40px; padding: 0 16px;">확인</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 관리자 수정 모달들 -->
+  <div class="modal-overlay" id="aboutEditModal" onclick="closeModalOutside(event, 'aboutEditModal')">
+    <div class="modal-card">
+      <button class="modal-close" onclick="closeModal('aboutEditModal')">&times;</button>
+      <h3 class="modal-title">✏️ 소개 내용 수정</h3>
+      <div class="modal-body" style="margin-top: 14px;">
+        <div class="admin-form-group"><label>Information 1</label><textarea id="admInfo1"></textarea></div>
+        <div class="admin-form-group"><label>Information 2</label><textarea id="admInfo2"></textarea></div>
+        <div style="margin-top: 16px; text-align: right;"><button class="btn primary" id="saveAboutBtn" onclick="saveSection('about')" style="min-height: 40px;">저장하기</button></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="expertiseEditModal" onclick="closeModalOutside(event, 'expertiseEditModal')">
+    <div class="modal-card">
+      <button class="modal-close" onclick="closeModal('expertiseEditModal')">&times;</button>
+      <h3 class="modal-title">✏️ 전문 분야 수정</h3>
+      <div class="modal-body" style="margin-top: 14px;">
+        <div class="admin-form-group"><label>1번 항목 (제목 / 설명)</label><input type="text" id="admS1t" style="margin-bottom:6px;"><textarea id="admS1d"></textarea></div>
+        <div class="admin-form-group"><label>2번 항목 (제목 / 설명)</label><input type="text" id="admS2t" style="margin-bottom:6px;"><textarea id="admS2d"></textarea></div>
+        <div class="admin-form-group"><label>3번 항목 (제목 / 설명)</label><input type="text" id="admS3t" style="margin-bottom:6px;"><textarea id="admS3d"></textarea></div>
+        <div class="admin-form-group"><label>4번 항목 (제목 / 설명)</label><input type="text" id="admS4t" style="margin-bottom:6px;"><textarea id="admS4d"></textarea></div>
+        <div style="margin-top: 16px; text-align: right;"><button class="btn primary" id="saveExpertiseBtn" onclick="saveSection('expertise')" style="min-height: 40px;">저장하기</button></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="credentialsEditModal" onclick="closeModalOutside(event, 'credentialsEditModal')">
+    <div class="modal-card">
+      <button class="modal-close" onclick="closeModal('credentialsEditModal')">&times;</button>
+      <h3 class="modal-title">✏️ 자격 및 인증 현황 수정</h3>
+      <div class="modal-body" style="margin-top: 14px;">
+        <div class="admin-form-group"><label>자격증 1</label><input type="text" id="admCert0"></div>
+        <div class="admin-form-group"><label>자격증 2</label><input type="text" id="admCert1"></div>
+        <div class="admin-form-group"><label>자격증 3</label><input type="text" id="admCert2"></div>
+        <div class="admin-form-group"><label>자격증 4</label><input type="text" id="admCert3"></div>
+        <div class="admin-form-group"><label>자격증 5</label><input type="text" id="admCert4"></div>
+        <div class="admin-form-group"><label>하단 설명 코멘트</label><textarea id="admCertComment"></textarea></div>
+        <div style="margin-top: 16px; text-align: right;"><button class="btn primary" id="saveCertBtn" onclick="saveSection('credentials')" style="min-height: 40px;">저장하기</button></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="contactEditModal" onclick="closeModalOutside(event, 'contactEditModal')">
+    <div class="modal-card">
+      <button class="modal-close" onclick="closeModal('contactEditModal')">&times;</button>
+      <h3 class="modal-title">✏️ 기본 정보 및 연락처 수정</h3>
+      <div class="modal-body" style="margin-top: 14px;">
+        <div class="admin-form-group"><label>앱 타이틀</label><input type="text" id="admAppTitle"></div>
+        <div class="admin-form-group"><label>이름</label><input type="text" id="admName"></div>
+        <div class="admin-form-group"><label>소속</label><input type="text" id="admCompany"></div>
+        <div class="admin-form-group"><label>직위</label><input type="text" id="admTitle"></div>
+        <div class="admin-form-group"><label>전화번호</label><input type="text" id="admPhone" oninput="formatPhoneNumber(this)"></div>
+        <div class="admin-form-group"><label>웹사이트</label><input type="text" id="admSite"></div>
+        <div class="admin-form-group"><label>이메일</label><input type="text" id="admMail"></div>
+        <div style="margin-top: 16px; text-align: right;"><button class="btn primary" id="saveContactBtn" onclick="saveSection('contact')" style="min-height: 40px;">저장하기</button></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="settingsEditModal" onclick="closeModalOutside(event, 'settingsEditModal')">
+    <div class="modal-card">
+      <button class="modal-close" onclick="closeModal('settingsEditModal')">&times;</button>
+      <h3 class="modal-title">✏️ 관리자 설정</h3>
+      <div class="modal-body" style="margin-top:14px;">
+        <div class="admin-form-group">
+          <label>관리자 비밀번호</label>
+          <input type="password" id="admAdminPassword" placeholder="변경할 때만 새 비밀번호 입력" autocomplete="new-password">
+          <small>비워 두면 기존 비밀번호가 유지됩니다.</small>
+          <label style="display:flex;align-items:center;gap:8px;margin-top:10px;font-weight:600;">
+            <input type="checkbox" id="admRemovePassword" style="width:auto;"> 관리자 비밀번호 삭제
+          </label>
+        </div>
+        <div class="admin-form-group">
+          <label>키워드</label>
+          <textarea id="admKeyWord" placeholder="AI 디지털 교육, 스마트교육, 수업 컨설팅"></textarea>
+          <small>쉼표(,)로 구분하세요. 항목을 지우거나 전체를 비워 저장할 수 있습니다.</small>
+        </div>
+        <div style="margin-top:16px;text-align:right;">
+          <button class="btn primary" id="saveSettingsBtn" onclick="saveSection('settings')" style="min-height:40px;">저장하기</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 메인 버튼 관리 모달 (여백 압축 및 휴지통 빨간색 지정) -->
+  <div class="modal-overlay" id="linksEditModal" onclick="closeModalOutside(event, 'linksEditModal')">
+    <div class="modal-card" style="max-width: 520px;">
+      <button class="modal-close" onclick="closeModal('linksEditModal')">&times;</button>
+      <h3 class="modal-title">✏️ 메인 버튼 관리</h3>
+      
+      <div class="modal-body" style="margin-top: 14px;">
+        <!-- 1. 상단: 새 링크 추가 양식 -->
+        <div class="add-link-form-box">
+          <div class="form-title">➕ 새 링크 추가</div>
+          <div class="form-row">
+            <input type="text" id="newLinkName" placeholder="버튼 이름 (예: 연수 교재)" />
+            <input type="text" id="newLinkUrl" placeholder="링크 URL (https://...)" />
+            <button type="button" class="btn primary add-btn" onclick="addNewLinkItem()">추가</button>
+          </div>
+        </div>
+
+        <!-- 2. 하단: 한 줄 형태의 링크 목록 -->
+        <div id="linkItemsContainer" class="link-list-container"></div>
+
+        <div style="margin-top: 16px; text-align: right;">
+          <button class="btn primary" id="saveLinksBtn" onclick="saveSection('links')" style="min-height: 40px; padding: 0 18px;">저장하기</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="todayLinksEditModal" onclick="closeModalOutside(event, 'todayLinksEditModal')">
+    <div class="modal-card">
+      <button class="modal-close" onclick="closeModal('todayLinksEditModal')">&times;</button>
+      <h3 class="modal-title">✏️ 오늘의 연수 관리</h3>
+      <div class="modal-body" style="margin-top: 14px;">
+        <div id="todayLinkItemsContainer"></div>
+        <div style="margin-top: 8px; margin-bottom: 16px;">
+          <button class="link-action-btn" type="button" onclick="addLinkItem('today')" style="width: 100%; padding: 8px; font-weight: 700; background: #f0f4ff; color: var(--primary); border: 1px dashed var(--primary); border-radius: 8px;">+ 새 연수 링크 추가하기</button>
+        </div>
+        <div style="text-align: right;"><button class="btn primary" id="saveTodayLinksBtn" onclick="saveSection('todayLinks')" style="min-height: 40px;">저장하기</button></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // 새로 배포한 GAS 웹 앱의 /exec 주소를 입력하세요.
+    const GAS_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbxqRZ8QIvzY5RYV1asaEAxZkzrqfT57-L-8VoebVezi5sVAg6GsbRI-YsV5TnjW6HpF/exec';
+
+    let isAdminLoggedIn = false;
+    let adminToken = '';
+    let currentLinks = [];
+    let currentTodayLinks = [];
+    let bridgeReady = false;
+    let requestSequence = 0;
+    const pendingRequests = new Map();
+
+    function callGas(action, payload = {}) {
+      return new Promise((resolve, reject) => {
+        if (!bridgeReady) {
+          reject(new Error('데이터 서버에 아직 연결되지 않았습니다. 잠시 후 다시 시도해 주세요.'));
+          return;
         }
-    </script>
+        const id = 'req_' + Date.now() + '_' + (++requestSequence);
+        const timer = setTimeout(() => {
+          pendingRequests.delete(id);
+          reject(new Error('서버 응답 시간이 초과되었습니다.'));
+        }, 30000);
+        pendingRequests.set(id, { resolve, reject, timer });
+        document.getElementById('gasBridge').contentWindow.postMessage({
+          type: 'CAP89_REQUEST', id, action, payload
+        }, '*');
+      });
+    }
+
+    window.addEventListener('message', event => {
+      const frame = document.getElementById('gasBridge');
+      if (!frame || event.source !== frame.contentWindow || !event.data) return;
+      if (event.data.type === 'CAP89_BRIDGE_READY') {
+        bridgeReady = true;
+        loadSiteData();
+        return;
+      }
+      if (event.data.type !== 'CAP89_RESPONSE') return;
+      const pending = pendingRequests.get(event.data.id);
+      if (!pending) return;
+      clearTimeout(pending.timer);
+      pendingRequests.delete(event.data.id);
+      event.data.ok ? pending.resolve(event.data.result) : pending.reject(new Error(event.data.error || '요청 처리 실패'));
+    });
+
+    async function loadSiteData() {
+      try {
+        const data = await callGas('getData');
+        applySiteData(data);
+      } catch (error) {
+        alert('사이트 정보를 불러오지 못했습니다.\n' + error.message);
+      }
+    }
+
+    function applySiteData(data) {
+      const info = data.userInfo || {};
+      currentLinks = Array.isArray(info.links) ? info.links : [];
+      currentTodayLinks = Array.isArray(info.todayLinks) ? info.todayLinks : [];
+
+      setText('uiAppTitle', data.appTitle || 'JP Park');
+      setText('uiName', info.name);
+      setText('uiCompany', info.company);
+      setText('uiTitle', info.title);
+      setText('uiFooterName', info.name);
+      setText('modalCompany', info.company);
+      setText('modalTitle', info.title);
+      setText('modalInfo1', info.info1);
+      setText('modalInfo2', info.info2);
+      setText('contactCompany', info.company);
+      setText('contactTitle', info.title);
+      setText('contactPhone', info.phone);
+      setText('contactMail', info.mail);
+      setText('contactSite', info.site);
+
+      setValue('admAppTitle', data.appTitle);
+      setValue('admName', info.name);
+      setValue('admCompany', info.company);
+      setValue('admTitle', info.title);
+      setValue('admPhone', info.phone);
+      setValue('admSite', info.site);
+      setValue('admMail', info.mail);
+      setValue('admInfo1', info.info1);
+      setValue('admInfo2', info.info2);
+      setValue('admKeyWord', data.keyWord || '');
+      setValue('admAdminPassword', '');
+
+      const skills = Array.isArray(info.skills) ? info.skills : [];
+      const expertiseList = document.getElementById('expertiseList');
+      expertiseList.innerHTML = '';
+      for (let i = 0; i < 4; i++) {
+        const skill = skills[i] || {};
+        setValue('admS' + (i + 1) + 't', skill.title);
+        setValue('admS' + (i + 1) + 'd', skill.desc);
+        const item = document.createElement('article');
+        item.className = 'expertise-item';
+        item.innerHTML = '<span class="skill-title" id="s' + (i + 1) + 't"></span><span class="skill-desc" id="s' + (i + 1) + 'd"></span>';
+        item.querySelector('.skill-title').textContent = skill.title || '';
+        item.querySelector('.skill-desc').textContent = skill.desc || '';
+        expertiseList.appendChild(item);
+      }
+
+      const certs = Array.isArray(info.certs) ? info.certs : [];
+      const certList = document.getElementById('modalCertList');
+      certList.innerHTML = '';
+      for (let i = 0; i < 5; i++) {
+        setValue('admCert' + i, certs[i] || '');
+        if (certs[i]) {
+          const li = document.createElement('li');
+          const b = document.createElement('b');
+          b.textContent = certs[i];
+          li.appendChild(b);
+          certList.appendChild(li);
+        }
+      }
+      setValue('admCertComment', info.certComment);
+      setText('modalCertComment', info.certComment);
+
+      renderPublicLinks();
+      refreshKeywords(data.keyWord || '');
+      document.querySelector('.contact-action-icons').innerHTML =
+        '<a class="contact-action-icon" href="sms:' + encodeURI(info.phone || '') + '?body=' + encodeURIComponent('안녕하세요, 박종필 수석님. 강의 관련 문의 드립니다.') + '" title="문자 보내기">💬</a>' +
+        '<a class="contact-action-icon" href="tel:' + encodeURI(info.phone || '') + '" title="전화 걸기">📞</a>';
+      document.getElementById('contactMailLink').href = buildGmailComposeUrl(info.mail);
+      document.getElementById('contactSiteLink').href = normalizeWebsite(info.site);
+      document.title = (data.appTitle || 'JP Park') + ' | AI·디지털 미래교육';
+    }
+
+    function setText(id, value) {
+      const el = document.getElementById(id);
+      if (el) el.textContent = value || '';
+    }
+
+    function setValue(id, value) {
+      const el = document.getElementById(id);
+      if (el) el.value = value || '';
+    }
+
+    function renderPublicLinks() {
+      const linkContainer = document.getElementById('mainLinkContainer');
+      const pencilBtn = document.getElementById('editPencilLinks');
+      linkContainer.innerHTML = '';
+      currentLinks.forEach(link => {
+        const a = document.createElement('a');
+        a.className = 'btn subtle';
+        a.href = link.url;
+        a.textContent = link.name;
+        a.target = '_blank';
+        a.rel = 'noopener noreferrer';
+        linkContainer.appendChild(a);
+      });
+      linkContainer.appendChild(pencilBtn);
+
+      const todayContainer = document.getElementById('todayLinksContainer');
+      todayContainer.innerHTML = '';
+      currentTodayLinks.forEach((link, index) => {
+        const a = document.createElement('a');
+        a.className = 'today-link-item';
+        a.href = link.url;
+        a.target = '_blank';
+        a.rel = 'noopener noreferrer';
+        a.innerHTML = '<span class="today-link-num"></span><span></span>';
+        a.children[0].textContent = index + 1;
+        a.children[1].textContent = link.name;
+        todayContainer.appendChild(a);
+      });
+    }
+
+    const pageTitles = {
+      home: 'Home',
+      about: "Who's JP Park",
+      expertise: '전문 분야',
+      credentials: '자격',
+      contact: '연락하기'
+    };
+
+    function showPage(pageName, options = {}) {
+      const target = document.querySelector(`.page-view[data-page="${pageName}"]`);
+      if (!target) pageName = 'home';
+
+      document.querySelectorAll('.page-view').forEach(page => {
+        page.classList.toggle('active', page.dataset.page === pageName);
+      });
+      document.querySelectorAll('[data-page-link]').forEach(button => {
+        const selected = button.dataset.pageLink === pageName;
+        button.classList.toggle('active', selected);
+        button.setAttribute('aria-current', selected ? 'page' : 'false');
+      });
+
+      document.title = pageName === 'home'
+        ? document.getElementById('uiAppTitle').textContent + ' | AI·디지털 미래교육'
+        : pageTitles[pageName] + ' | ' + document.getElementById('uiAppTitle').textContent;
+
+      if (!options.fromHistory) {
+        const nextHash = pageName === 'home' ? '#home' : '#' + pageName;
+        history.pushState({ page: pageName }, '', nextHash);
+      }
+      window.scrollTo({ top: 0, behavior: options.instant ? 'auto' : 'smooth' });
+    }
+
+    window.addEventListener('popstate', event => {
+      const pageName = event.state?.page || location.hash.replace('#', '') || 'home';
+      showPage(pageName, { fromHistory: true, instant: true });
+    });
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const initialPage = location.hash.replace('#', '') || 'home';
+      history.replaceState({ page: initialPage }, '', location.href);
+      showPage(initialPage, { fromHistory: true, instant: true });
+      if (!/^https:\/\/script\.google\.com\/macros\/s\/.+\/exec/.test(GAS_WEB_APP_URL)) {
+        alert('index.html의 GAS_WEB_APP_URL에 배포된 GAS 웹 앱 주소를 입력해 주세요.');
+        return;
+      }
+      document.getElementById('gasBridge').src = GAS_WEB_APP_URL + '?bridge=1';
+    });
+
+    function openModal(modalId) {
+      const modal = document.getElementById(modalId);
+      if (!modal) return;
+      modal.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeModal(modalId) {
+      const modal = document.getElementById(modalId);
+      if (!modal) return;
+      modal.classList.remove('active');
+      document.body.style.overflow = 'auto';
+    }
+    function closeModalOutside(event, modalId) {
+      if (event.target.classList.contains('modal-overlay')) {
+        closeModal(modalId);
+      }
+    }
+
+    function handleAdminAuth() {
+      if (isAdminLoggedIn) {
+        if (confirm("관리자 모드를 종료(로그아웃)하시겠습니까?")) {
+          isAdminLoggedIn = false;
+          adminToken = '';
+          document.getElementById('editPencilAbout').style.display = 'none';
+          document.getElementById('editPencilExpertise').style.display = 'none';
+          document.getElementById('editPencilCredentials').style.display = 'none';
+          document.getElementById('editPencilContact').style.display = 'none';
+          document.getElementById('editPencilLinks').style.display = 'none';
+          document.getElementById('editPencilToday').style.display = 'none';
+          document.getElementById('editPencilSettings').style.display = 'none';
+          document.getElementById('adminLockBtn').innerText = "🔒";
+          alert("로그아웃 되었습니다.");
+        }
+      } else {
+        document.getElementById('loginPasswordInput').value = "";
+        openModal('loginModal');
+        setTimeout(() => document.getElementById('loginPasswordInput').focus(), 100);
+      }
+    }
+
+    async function verifyAdminPassword() {
+      const input = document.getElementById('loginPasswordInput');
+      const inputPwd = input.value;
+      if (!inputPwd) {
+        alert('비밀번호를 입력해 주세요.');
+        return;
+      }
+      input.disabled = true;
+      try {
+        const result = await callGas('login', { password: inputPwd });
+        if (!result.success) {
+          alert(result.message || '비밀번호가 일치하지 않습니다.');
+          return;
+        }
+        isAdminLoggedIn = true;
+        adminToken = result.token;
+        closeModal('loginModal');
+        document.getElementById('editPencilAbout').style.display = 'grid';
+        document.getElementById('editPencilExpertise').style.display = 'grid';
+        document.getElementById('editPencilCredentials').style.display = 'grid';
+        document.getElementById('editPencilContact').style.display = 'grid';
+        document.getElementById('editPencilLinks').style.display = 'grid';
+        document.getElementById('editPencilToday').style.display = 'grid';
+        document.getElementById('editPencilSettings').style.display = 'grid';
+        document.getElementById('adminLockBtn').innerText = "🔓";
+        alert("로그인 성공! 각 영역의 연필(✏️) 아이콘을 눌러 수정할 수 있습니다.");
+      } catch (error) {
+        alert('로그인 중 오류가 발생했습니다.\n' + error.message);
+      } finally {
+        input.disabled = false;
+      }
+    }
+
+    function openEditModal(editModalId) {
+      if (editModalId === 'linksEditModal') {
+        renderMainLinkEditor();
+      } else if (editModalId === 'todayLinksEditModal') {
+        renderLinkEditor('today');
+      }
+      openModal(editModalId);
+    }
+
+    // 메인 링크 전용 렌더링 함수
+    function renderMainLinkEditor() {
+      let container = document.getElementById('linkItemsContainer');
+      container.innerHTML = "";
+
+      currentLinks.forEach((link, idx) => {
+        let row = document.createElement('div');
+        row.className = 'link-row-card';
+        row.draggable = true;
+        row.dataset.index = idx;
+
+        if (link.isEditing) {
+          // Inline 수정 상태
+          row.innerHTML = `
+            <span class="drag-icon">☰</span>
+            <div class="link-edit-inputs">
+              <input type="text" id="editName_${idx}" value="${escapeAttr(link.name)}" placeholder="버튼 이름" />
+              <input type="text" id="editUrl_${idx}" value="${escapeAttr(link.url)}" placeholder="URL" />
+            </div>
+            <div class="icon-btn-group">
+              <button type="button" class="icon-action-btn confirm" onclick="confirmEditMainLink(${idx})" title="완료">✓</button>
+              <button type="button" class="icon-action-btn" onclick="cancelEditMainLink(${idx})" title="취소">✕</button>
+            </div>
+          `;
+        } else {
+          // 일반 조회 상태 (휴지통 버튼 .danger 클래스 적용)
+          row.innerHTML = `
+            <span class="drag-icon">☰</span>
+            <div class="link-info-display">
+              <span class="link-title">${escapeHtml(link.name)}</span>
+              <span class="link-url-text">${escapeHtml(link.url)}</span>
+            </div>
+            <div class="icon-btn-group">
+              <button type="button" class="icon-action-btn" onclick="toggleEditMainLink(${idx})" title="수정">✏️</button>
+              <button type="button" class="icon-action-btn danger" onclick="removeMainLink(${idx})" title="삭제">🗑️</button>
+            </div>
+          `;
+        }
+
+        row.addEventListener('dragstart', handleMainDragStart);
+        row.addEventListener('dragover', handleMainDragOver);
+        row.addEventListener('drop', handleMainDrop);
+        row.addEventListener('dragend', handleMainDragEnd);
+
+        container.appendChild(row);
+      });
+    }
+
+    // 상단 양식을 통한 새 링크 추가
+    function addNewLinkItem() {
+      let nameInput = document.getElementById('newLinkName');
+      let urlInput = document.getElementById('newLinkUrl');
+
+      let name = nameInput.value.trim();
+      let url = urlInput.value.trim();
+
+      if (!name || !url) {
+        alert("버튼 이름과 링크 URL을 모두 입력해주세요.");
+        return;
+      }
+
+      currentLinks.push({
+        name: name,
+        url: url
+      });
+
+      nameInput.value = "";
+      urlInput.value = "";
+      renderMainLinkEditor();
+    }
+
+    // 수정 모드 토글 및 완료/취소
+    function toggleEditMainLink(idx) {
+      currentLinks[idx].isEditing = true;
+      renderMainLinkEditor();
+    }
+
+    function confirmEditMainLink(idx) {
+      let nameVal = document.getElementById(`editName_${idx}`).value.trim();
+      let urlVal = document.getElementById(`editUrl_${idx}`).value.trim();
+
+      if (!nameVal || !urlVal) {
+        alert("버튼 이름과 URL을 모두 입력해주세요.");
+        return;
+      }
+
+      currentLinks[idx].name = nameVal;
+      currentLinks[idx].url = urlVal;
+      currentLinks[idx].isEditing = false;
+      renderMainLinkEditor();
+    }
+
+    function cancelEditMainLink(idx) {
+      currentLinks[idx].isEditing = false;
+      renderMainLinkEditor();
+    }
+
+    // 삭제
+    function removeMainLink(idx) {
+      if (confirm(`'${currentLinks[idx].name}' 항목을 삭제하시겠습니까?`)) {
+        currentLinks.splice(idx, 1);
+        renderMainLinkEditor();
+      }
+    }
+
+    // Drag & Drop 핸들러
+    let mainDraggedIdx = null;
+
+    function handleMainDragStart(e) {
+      mainDraggedIdx = parseInt(this.dataset.index);
+      this.classList.add('dragging');
+      e.dataTransfer.effectAllowed = 'move';
+    }
+
+    function handleMainDragOver(e) {
+      e.preventDefault();
+      e.dataTransfer.dropEffect = 'move';
+    }
+
+    function handleMainDrop(e) {
+      e.preventDefault();
+      let targetIdx = parseInt(this.dataset.index);
+      if (mainDraggedIdx === null || mainDraggedIdx === targetIdx) return;
+
+      let movedItem = currentLinks.splice(mainDraggedIdx, 1)[0];
+      currentLinks.splice(targetIdx, 0, movedItem);
+
+      renderMainLinkEditor();
+    }
+
+    function handleMainDragEnd(e) {
+      this.classList.remove('dragging');
+      mainDraggedIdx = null;
+    }
+
+    // 오늘의 연수 전용 레거시 렌더러
+    function renderLinkEditor(type) {
+      let container = document.getElementById('todayLinkItemsContainer');
+      container.innerHTML = "";
+      
+      currentTodayLinks.forEach((link, idx) => {
+        let itemDiv = document.createElement('div');
+        itemDiv.className = 'link-item-card';
+        itemDiv.style.cssText = "background:#f8fafc; border:1px solid #cbd5e1; border-radius:10px; padding:10px; margin-bottom:8px;";
+        itemDiv.draggable = true;
+        itemDiv.dataset.index = idx;
+
+        itemDiv.innerHTML = `
+          <div style="font-size:11px; color:#94a3b8; font-weight:700; margin-bottom:4px;">☰ 드래그하여 순서 변경 (${idx + 1})</div>
+          <div style="display:flex; gap:6px; margin-bottom:6px;">
+            <input type="text" class="link-name-input" value="${escapeAttr(link.name)}" style="flex:1; padding:5px 8px; border-radius:6px; border:1px solid #cbd5e1; font-size:12.5px;" placeholder="제목">
+            <input type="text" class="link-url-input" value="${escapeAttr(link.url)}" style="flex:1; padding:5px 8px; border-radius:6px; border:1px solid #cbd5e1; font-size:12.5px;" placeholder="URL">
+          </div>
+          <div style="text-align:right;">
+            <button type="button" class="icon-action-btn danger" onclick="removeLinkItem('today', ${idx})" style="font-size:12px; width:auto; padding:0 8px; height:24px;">삭제</button>
+          </div>
+        `;
+
+        itemDiv.addEventListener('dragstart', function() { mainDraggedIdx = idx; this.classList.add('dragging'); });
+        itemDiv.addEventListener('dragover', function(e) { e.preventDefault(); });
+        itemDiv.addEventListener('drop', function(e) {
+          e.preventDefault();
+          collectLinkEditorValues('today');
+          let targetIdx = parseInt(this.dataset.index);
+          let movedItem = currentTodayLinks.splice(mainDraggedIdx, 1)[0];
+          currentTodayLinks.splice(targetIdx, 0, movedItem);
+          renderLinkEditor('today');
+        });
+        itemDiv.addEventListener('dragend', function() { this.classList.remove('dragging'); });
+
+        container.appendChild(itemDiv);
+      });
+    }
+
+    function addLinkItem(type) {
+      collectLinkEditorValues(type);
+      currentTodayLinks.push({ name: "새 연수 항목", url: "" });
+      renderLinkEditor('today');
+    }
+
+    function removeLinkItem(type, idx) {
+      collectLinkEditorValues(type);
+      currentTodayLinks.splice(idx, 1);
+      renderLinkEditor('today');
+    }
+
+    function collectLinkEditorValues(type) {
+      if (type === 'today') {
+        let container = document.getElementById('todayLinkItemsContainer');
+        let names = container.querySelectorAll('.link-name-input');
+        let urls = container.querySelectorAll('.link-url-input');
+        for (let i = 0; i < names.length; i++) {
+          if (currentTodayLinks[i]) {
+            currentTodayLinks[i].name = names[i].value;
+            currentTodayLinks[i].url = urls[i].value;
+          }
+        }
+      }
+    }
+
+    function formatPhoneNumber(input) {
+      let numbers = input.value.replace(/[^0-9]/g, '');
+      let formatted = numbers;
+      if (numbers.length > 3 && numbers.length <= 7) {
+        formatted = numbers.slice(0, 3) + '-' + numbers.slice(3);
+      } else if (numbers.length > 7) {
+        if (numbers.length === 11) {
+          formatted = numbers.slice(0, 3) + '-' + numbers.slice(3, 7) + '-' + numbers.slice(7, 11);
+        } else if (numbers.length === 10) {
+          formatted = numbers.slice(0, 3) + '-' + numbers.slice(3, 6) + '-' + numbers.slice(6, 10);
+        } else {
+          formatted = numbers.slice(0, 3) + '-' + numbers.slice(3, 7) + '-' + numbers.slice(7);
+        }
+      }
+      input.value = formatted;
+    }
+
+    async function saveSection(sectionType) {
+      if (sectionType === 'todayLinks') collectLinkEditorValues('today');
+
+      const buttonMap = {
+        about: 'saveAboutBtn',
+        expertise: 'saveExpertiseBtn',
+        credentials: 'saveCertBtn',
+        contact: 'saveContactBtn',
+        links: 'saveLinksBtn',
+        todayLinks: 'saveTodayLinksBtn',
+        settings: 'saveSettingsBtn'
+      };
+      let btnId = buttonMap[sectionType];
+      let saveBtn = document.getElementById(btnId);
+      if (saveBtn.disabled) return;
+      saveBtn.disabled = true;
+      saveBtn.innerText = "저장 중...";
+
+      let certsArr = [];
+      for (let i = 0; i < 5; i++) {
+        certsArr.push(document.getElementById('admCert' + i).value);
+      }
+
+      // 화면 편집용 속성은 제외하고 이름과 URL만 저장합니다.
+      let cleanLinks = currentLinks.map(l => ({
+        name: String(l.name || '').trim(),
+        url: String(l.url || '').trim()
+      }));
+      let cleanTodayLinks = currentTodayLinks.map(l => ({
+        name: String(l.name || '').trim(),
+        url: String(l.url || '').trim()
+      }));
+
+      let data = {
+        appTitle: document.getElementById('admAppTitle').value,
+        adminPassword: document.getElementById('admAdminPassword').value.trim(),
+        removeAdminPassword: document.getElementById('admRemovePassword').checked,
+        keyWord: document.getElementById('admKeyWord').value,
+        name: document.getElementById('admName').value,
+        company: document.getElementById('admCompany').value,
+        title: document.getElementById('admTitle').value,
+        phone: document.getElementById('admPhone').value,
+        site: document.getElementById('admSite').value,
+        mail: document.getElementById('admMail').value,
+        info1: document.getElementById('admInfo1').value,
+        info2: document.getElementById('admInfo2').value,
+        skills: [
+          { title: document.getElementById('admS1t').value, desc: document.getElementById('admS1d').value },
+          { title: document.getElementById('admS2t').value, desc: document.getElementById('admS2d').value },
+          { title: document.getElementById('admS3t').value, desc: document.getElementById('admS3d').value },
+          { title: document.getElementById('admS4t').value, desc: document.getElementById('admS4d').value }
+        ],
+        certs: certsArr,
+        certComment: document.getElementById('admCertComment').value,
+        links: cleanLinks,
+        todayLinks: cleanTodayLinks
+      };
+
+      try {
+          const res = await callGas('save', { token: adminToken, data });
+          saveBtn.disabled = false;
+          saveBtn.innerText = "저장하기";
+          alert(res.message);
+          
+          if (res.success) {
+            closeModal('aboutEditModal');
+            closeModal('expertiseEditModal');
+            closeModal('credentialsEditModal');
+            closeModal('contactEditModal');
+            closeModal('linksEditModal');
+            closeModal('todayLinksEditModal');
+            closeModal('settingsEditModal');
+
+            refreshKeywords(data.keyWord);
+            
+            // 화면 부분 갱신
+            document.getElementById('pageTitle').innerText = data.appTitle + " | AI·디지털 미래교육";
+            document.getElementById('uiAppTitle').innerText = data.appTitle;
+            document.getElementById('uiName').innerText = data.name;
+            document.getElementById('uiCompany').innerText = data.company;
+            document.getElementById('uiTitle').innerText = data.title;
+            document.getElementById('uiFooterName').innerText = data.name;
+            
+            document.getElementById('modalCompany').innerText = data.company;
+            document.getElementById('modalTitle').innerText = data.title;
+            document.getElementById('modalInfo1').innerText = data.info1;
+            document.getElementById('modalInfo2').innerText = data.info2;
+            
+            document.getElementById('contactCompany').innerText = data.company;
+            document.getElementById('contactTitle').innerText = data.title;
+            document.getElementById('contactPhone').innerText = data.phone;
+            document.getElementById('contactMail').innerText = data.mail;
+            document.getElementById('contactSite').innerText = data.site;
+
+            let iconContainer = document.querySelector('.contact-action-icons');
+            if (iconContainer) {
+              iconContainer.innerHTML = `
+                <a class="contact-action-icon" href="sms:${data.phone}?body=${encodeURIComponent('안녕하세요, 박종필 수석님. 강의 관련 문의 드립니다.')}" title="문자 보내기">💬</a>
+                <a class="contact-action-icon" href="tel:${data.phone}" title="전화 걸기">📞</a>
+              `;
+            }
+
+            document.getElementById('contactMailLink').href = buildGmailComposeUrl(data.mail);
+            document.getElementById('contactSiteLink').href = normalizeWebsite(data.site);
+
+            currentLinks = data.links;
+            currentTodayLinks = data.todayLinks;
+            renderPublicLinks();
+
+            // 전문 분야 업데이트
+            for (let i = 0; i < 4; i++) {
+              document.getElementById('s' + (i+1) + 't').innerText = data.skills[i].title;
+              document.getElementById('s' + (i+1) + 'd').innerText = data.skills[i].desc;
+            }
+
+            let certList = document.getElementById('modalCertList');
+            certList.innerHTML = "";
+            data.certs.forEach(cert => {
+              if (!cert || !cert.trim()) return;
+              let item = document.createElement('li');
+              let strong = document.createElement('b');
+              strong.textContent = cert;
+              item.appendChild(strong);
+              certList.appendChild(item);
+            });
+            document.getElementById('modalCertComment').innerText = data.certComment;
+            document.getElementById('admAdminPassword').value = '';
+            document.getElementById('admRemovePassword').checked = false;
+          }
+      } catch (err) {
+          saveBtn.disabled = false;
+          saveBtn.innerText = "저장하기";
+          alert("저장 중 오류가 발생했습니다: " + err.message);
+      }
+    }
+
+    function normalizeWebsite(site) {
+      const value = String(site || '').trim();
+      if (!value) return '#';
+      return /^https?:\/\//i.test(value) ? value : 'https://' + value;
+    }
+
+    function buildGmailComposeUrl(recipient) {
+      const subject = '(웹사이트) 강의 관련 문의';
+      const body = [
+        '웹사이트에서 보고 강의 관련 문의드립니다.',
+        '',
+        '강의 일시: ',
+        '강의 내용: '
+      ].join('\n');
+
+      return 'https://mail.google.com/mail/?view=cm&fs=1'
+        + '&to=' + encodeURIComponent(recipient || '')
+        + '&su=' + encodeURIComponent(subject)
+        + '&body=' + encodeURIComponent(body);
+    }
+
+    function refreshKeywords(keyWordText) {
+      const container = document.getElementById('keywordContainer');
+      const pencil = document.getElementById('editPencilSettings');
+      if (!container || !pencil) return;
+
+      const words = String(keyWordText || '')
+        .split(',')
+        .map(word => word.trim())
+        .filter(Boolean);
+
+      container.innerHTML = '';
+      words.forEach(word => {
+        const tag = document.createElement('span');
+        tag.className = 'tag';
+        tag.textContent = word;
+        container.appendChild(tag);
+      });
+      container.appendChild(pencil);
+      pencil.style.display = isAdminLoggedIn ? 'grid' : 'none';
+    }
+
+    function escapeHtml(value) {
+      return String(value ?? '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    function escapeAttr(value) {
+      return escapeHtml(value);
+    }
+  </script>
 </body>
 </html>
